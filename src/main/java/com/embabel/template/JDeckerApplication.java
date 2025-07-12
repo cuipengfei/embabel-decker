@@ -25,8 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @EnableAgentShell
 @EnableAgents(loggingTheme = LoggingThemes.STAR_WARS)
-class ProjectNameApplication {
+class JDeckerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ProjectNameApplication.class, args);
+        SpringApplication.run(JDeckerApplication.class, args);
     }
 }

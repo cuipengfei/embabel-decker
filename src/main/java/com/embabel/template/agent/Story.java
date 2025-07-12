@@ -1,4 +1,4 @@
 package com.embabel.template.agent;
 
-public class Story {
+record Story(String text) {
 }
