@@ -1,6 +1,7 @@
 package com.embabel.template.decker_agent;
 
 import com.embabel.agent.domain.library.ContentAsset;
+import kotlin.collections.CollectionsKt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,9 +47,9 @@ public class SlideDeck implements ContentAsset {
         }
         String[] parts = deck.split("(?m)^\\s*---+\\s*$");
         List<String> trimmedParts = Arrays.stream(parts)
-                .map(p -> p.trim())
+                .map(String::trim)
                 .filter(p -> !p.isBlank())
-                .collect(Collectors.toList());
+                .toList();
 
         if (trimmedParts.isEmpty()) {
             return List.of();
@@ -57,7 +58,9 @@ public class SlideDeck implements ContentAsset {
             return List.of();
         }
 
-        return trimmedParts.stream().skip(1).map(content -> new Slide(trimmedParts.indexOf(content), content)).collect(Collectors.toList());
+        // 使用Kotlin标准库的drop和mapIndexed方法
+        List<String> slideContents = CollectionsKt.drop(trimmedParts, 1);
+        return CollectionsKt.mapIndexed(slideContents, (index, content) -> new Slide(index + 1, content));
     }
 
     public String header() {
@@ -118,7 +121,8 @@ public class SlideDeck implements ContentAsset {
             String dotString = matches.group(3);
             String diagramName = matches.group(2);
 
-            String diagramFile = digraphExpander.expandDiagram("digraph " + dotString, diagramName);
+            // Fixed: Correct parameter order to match Kotlin version
+            String diagramFile = digraphExpander.expandDiagram(diagramName, "digraph " + dotString);
             String imageReference = "\n![Diagram](./" + diagramFile + ")\n";
             result = result.replace(matches.group(0), imageReference);
             replacedDiagrams++;
@@ -128,4 +132,3 @@ public class SlideDeck implements ContentAsset {
         return new SlideDeck(result);
     }
 }
-
