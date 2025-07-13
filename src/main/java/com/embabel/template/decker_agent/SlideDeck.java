@@ -2,6 +2,7 @@ package com.embabel.template.decker_agent;
 
 import com.embabel.agent.domain.library.ContentAsset;
 import kotlin.collections.CollectionsKt;
+import kotlin.text.StringsKt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,8 @@ public class SlideDeck implements ContentAsset {
         }
         String[] parts = deck.split("(?m)^\\s*---+\\s*$");
         List<String> trimmedParts = Arrays.stream(parts)
-                .map(String::trim)
+                // 使用Kotlin的精确trim方法
+                .map(p -> StringsKt.trim(p, new char[]{'\r', '\n', ' ', '\t'}))
                 .filter(p -> !p.isBlank())
                 .toList();
 
@@ -69,7 +71,7 @@ public class SlideDeck implements ContentAsset {
         }
         String[] parts = deck.split("(?m)^\\s*---+\\s*$");
         List<String> trimmedParts = Arrays.stream(parts)
-                .map(p -> p.trim())
+                .map(p -> StringsKt.trim(p, new char[]{'\r', '\n', ' ', '\t'}))
                 .filter(p -> !p.isBlank())
                 .collect(Collectors.toList());
 
@@ -115,6 +117,9 @@ public class SlideDeck implements ContentAsset {
         String result = getContent();
         Pattern dotBlockRegex = Pattern.compile("(```)?dot\\s*digraph\\s+(\\w+)\\s+(\\{[\\s\\S;]*?\\})\\s*(```)?", Pattern.DOTALL);
         Matcher matches = dotBlockRegex.matcher(getContent());
+
+        logger.info("Found {} regex matches",
+                dotBlockRegex.matcher(getContent()).results().count());
 
         int replacedDiagrams = 0;
         while (matches.find()) {

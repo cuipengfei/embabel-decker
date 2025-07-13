@@ -3,7 +3,7 @@ package com.embabel.template.decker_agent;
 import com.embabel.agent.tools.file.FileTools;
 import org.springframework.stereotype.Service;
 
-import static java.util.Collections.emptyList;
+import static kotlin.collections.CollectionsKt.emptyList;
 
 @Service
 class FileToolsFilePersister implements FilePersister {

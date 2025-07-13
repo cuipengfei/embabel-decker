@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Collections.emptyList;
-import static java.util.Collections.emptySet;
+import static kotlin.collections.CollectionsKt.emptyList;
+import static kotlin.collections.SetsKt.emptySet;
 
 @Agent(description = "Presentation maker. Build a presentation on a topic")
 class PresentationMaker {
@@ -57,7 +57,13 @@ class PresentationMaker {
                 context,
                 10, // concurrencyLevel
                 kotlinx.coroutines.Dispatchers.getIO(), // dispatcher
-                (it, continuation) -> context.promptRunner(LlmOptions.fromModel(properties.getResearchLlm()), emptySet(), emptyList(), emptyList(), emptyList(), false)
+                (it, continuation) -> context.promptRunner(
+                                LlmOptions.fromModel(properties.getResearchLlm()),
+                                emptySet(), // 使用Kotlin的emptySet
+                                emptyList(), // 使用Kotlin的emptyList
+                                emptyList(),
+                                emptyList(),
+                                false)
                         .withToolGroup(CoreToolGroups.WEB)
                         .withToolObject(presentationRequest.getProject())
                         .withPromptContributor(presentationRequest)
@@ -87,7 +93,13 @@ class PresentationMaker {
     @Action
     public SlideDeck createDeck(PresentationRequest presentationRequest, ResearchResult researchComplete, OperationContext context) {
         List<ResearchReport> reports = researchComplete.getTopicResearches().stream().map(CompletedResearch::getResearchReport).toList();
-        SlideDeck slideDeck = context.promptRunner(LlmOptions.fromCriteria(ModelSelectionCriteria.byName(properties.getCreationLlm())), emptySet(), emptyList(), emptyList(), emptyList(), false)
+        SlideDeck slideDeck = context.promptRunner(
+                        LlmOptions.fromCriteria(ModelSelectionCriteria.byName(properties.getCreationLlm())),
+                        emptySet(), // 使用Kotlin的emptySet
+                        emptyList(), // 使用Kotlin的emptyList
+                        emptyList(),
+                        emptyList(),
+                        false)
                 .withPromptContributor(presentationRequest)
                 .withToolGroup(CoreToolGroups.WEB)
                 .withToolObject(presentationRequest.getProject())
@@ -158,7 +170,11 @@ class PresentationMaker {
 
             var illustrator = context.promptRunner(
                     LlmOptions.fromCriteria(ModelSelectionCriteria.byName(properties.getResearchLlm())).withTemperature(.3),
-                    emptySet(), emptyList(), emptyList(), emptyList(), false).withToolGroup(CoreToolGroups.WEB);
+                    emptySet(), // 使用Kotlin的emptySet
+                    emptyList(), // 使用Kotlin的emptyList
+                    emptyList(),
+                    emptyList(),
+                    false).withToolGroup(CoreToolGroups.WEB);
             List<Slide> newSlides = withDiagrams.slides().stream().map(slide -> {
                 String newContent = illustrator.generateText(
                         "Take the following slide in MARP format.\n" +

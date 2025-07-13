@@ -6,7 +6,8 @@ import com.embabel.agent.core.ProcessOptions;
 import com.embabel.agent.event.logging.personality.severance.LumonColorPalette;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.fasterxml.jackson.module.kotlin.ExtensionsKt;
+import kotlin.collections.CollectionsKt;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -35,15 +36,20 @@ public class PresentationMakerShell {
             @ShellOption(defaultValue = "file:/Users/rjohnson/dev/embabel.com/embabel-agent/embabel-agent-api/src/main/kotlin/com/embabel/examples/dogfood/presentation/kotlinconf_presentation.yml")
             String file
     ) throws IOException {
-        ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory()).registerModule(new KotlinModule.Builder().build());
+        ObjectMapper yamlReader = ExtensionsKt.registerKotlinModule(new ObjectMapper(new YAMLFactory()));
 
         PresentationRequest presentationRequest = yamlReader.readValue(
                 resourceLoader.getResource(file).getContentAsString(Charset.defaultCharset()),
                 PresentationRequest.class
         );
 
+        var targetAgent = CollectionsKt.single(
+                agentPlatform.agents(),
+                agent -> agent.getName().equals("PresentationMaker")
+        );
+
         var agentProcess = agentPlatform.runAgentWithInput(
-                agentPlatform.agents().stream().filter(a -> a.getName().equals("PresentationMaker")).findFirst().get(),
+                targetAgent,
                 ProcessOptions.Companion.getDEFAULT(),
                 presentationRequest
         );
@@ -59,4 +65,3 @@ public class PresentationMakerShell {
         ) + "\ndeck is at " + presentationRequest.getOutputDirectory() + "/" + presentationRequest.getOutputFile();
     }
 }
-
