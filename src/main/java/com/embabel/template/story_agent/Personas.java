@@ -1,4 +1,4 @@
-package com.embabel.template.agent;
+package com.embabel.template.story_agent;
 
 import com.embabel.agent.prompt.persona.Persona;
 import com.embabel.common.ai.prompt.PromptContributionLocation;

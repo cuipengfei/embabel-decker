@@ -1,4 +1,4 @@
-package com.embabel.template.agent;
+package com.embabel.template.story_agent;
 
 import com.embabel.agent.domain.io.UserInput;
 import com.embabel.agent.testing.unit.FakeOperationContext;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WriteAndReviewAgentTest {
-    
+
     @Test
     void testWriteAndReviewAgent() {
         var agent = new WriteAndReviewAgent(200, 400);
