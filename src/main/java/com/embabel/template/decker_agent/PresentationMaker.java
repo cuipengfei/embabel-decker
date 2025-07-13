@@ -1,9 +1,6 @@
 package com.embabel.template.decker_agent;
 
-import com.embabel.agent.api.annotation.Action;
-import com.embabel.agent.api.annotation.ActionMethodPromptRunnerKt;
-import com.embabel.agent.api.annotation.Agent;
-import com.embabel.agent.api.annotation.RequireNameMatch;
+import com.embabel.agent.api.annotation.*;
 import com.embabel.agent.api.common.OperationContext;
 import com.embabel.agent.api.dsl.MapperKt;
 import com.embabel.agent.core.CoreToolGroups;
@@ -213,6 +210,7 @@ class PresentationMaker {
         return withDiagrams;
     }
 
+    @AchievesGoal(description = "Create a presentation based on research reports")
     @Action
     public FileArtifact convertToSlides(PresentationRequest presentationRequest, @RequireNameMatch SlideDeck withIllustrations) {
         String htmlFile = slideFormatter.createHtmlSlides(

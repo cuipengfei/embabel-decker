@@ -11,19 +11,19 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 class PresentationRequest implements PromptContributor {
-    private final int slideCount;
-    private final String presenterBio;
-    private final String brief;
-    private final String softwareProject;
-    private final String outputDirectory;
-    private final String outputFile;
-    private final String header;
-    private final Map<String, ImageInfo> images;
-    private final boolean autoIllustrate;
-    private final CoStar coStar;
+    private int slideCount;
+    private String presenterBio;
+    private String brief;
+    private String softwareProject;
+    private String outputDirectory = "/Users/rjohnson/Documents";
+    private String outputFile = "presentation.md";
+    private String header;
+    private Map<String, ImageInfo> images = Map.of();
+    private boolean autoIllustrate;
+    private CoStar coStar;
 
     @JsonIgnore
-    private final Project project;
+    private Project project;
 
     public PresentationRequest(int slideCount, String presenterBio,
                                String brief, String softwareProject,
@@ -34,13 +34,16 @@ class PresentationRequest implements PromptContributor {
         this.presenterBio = presenterBio;
         this.brief = brief;
         this.softwareProject = softwareProject;
-        this.outputDirectory = outputDirectory != null ? outputDirectory : "/Users/rjohnson/Documents";
-        this.outputFile = outputFile != null ? outputFile : "presentation.md";
+        this.outputDirectory = outputDirectory;
+        this.outputFile = outputFile;
         this.header = header;
-        this.images = images != null ? images : Map.of();
+        this.images = images;
         this.autoIllustrate = autoIllustrate;
         this.coStar = coStar;
         this.project = softwareProject != null ? new Project(softwareProject) : null;
+    }
+
+    public PresentationRequest() {
     }
 
     public int getSlideCount() {

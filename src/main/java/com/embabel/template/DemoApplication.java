@@ -19,13 +19,15 @@ import com.embabel.agent.config.annotation.EnableAgentShell;
 import com.embabel.agent.config.annotation.EnableAgents;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 
 @SpringBootApplication
 @EnableAgentShell
+@ConfigurationPropertiesScan
 @EnableAgents
-class JDeckerApplication {
+class DemoApplication {
     public static void main(String[] args) {
-        SpringApplication.run(JDeckerApplication.class, args);
+        SpringApplication.run(DemoApplication.class, args);
     }
 }
