@@ -5,6 +5,7 @@ import com.embabel.agent.api.annotation.ActionMethodPromptRunnerKt;
 import com.embabel.agent.api.annotation.Agent;
 import com.embabel.agent.api.annotation.RequireNameMatch;
 import com.embabel.agent.api.common.OperationContext;
+import com.embabel.agent.api.dsl.MapperKt;
 import com.embabel.agent.core.CoreToolGroups;
 import com.embabel.agent.domain.io.FileArtifact;
 import com.embabel.agent.domain.library.CompletedResearch;
@@ -51,8 +52,12 @@ class PresentationMaker {
 
     @Action
     public ResearchResult researchTopics(ResearchTopics researchTopics, PresentationRequest presentationRequest, OperationContext context) {
-        List<ResearchReport> researchReports = researchTopics.getTopics().stream().parallel().map(it ->
-                context.promptRunner(LlmOptions.fromModel(properties.getResearchLlm()), emptySet(), emptyList(), emptyList(), emptyList(), false)
+        List<ResearchReport> researchReports = MapperKt.parallelMap(
+                researchTopics.getTopics(),
+                context,
+                10, // concurrencyLevel
+                kotlinx.coroutines.Dispatchers.getIO(), // dispatcher
+                (it, continuation) -> context.promptRunner(LlmOptions.fromModel(properties.getResearchLlm()), emptySet(), emptyList(), emptyList(), emptyList(), false)
                         .withToolGroup(CoreToolGroups.WEB)
                         .withToolObject(presentationRequest.getProject())
                         .withPromptContributor(presentationRequest)
@@ -67,7 +72,7 @@ class PresentationMaker {
                                         String.join("\n", it.getQuestions()),
                                 ResearchReport.class
                         )
-        ).toList();
+        );
 
         return new ResearchResult(
                 researchTopics.getTopics().stream().map(topic ->
