@@ -20,8 +20,10 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.lang.String.join;
 import static kotlin.collections.CollectionsKt.emptyList;
 import static kotlin.collections.SetsKt.emptySet;
+import static kotlinx.coroutines.Dispatchers.getIO;
 
 @Agent(description = "Presentation maker. Build a presentation on a topic")
 class PresentationMaker {
@@ -56,8 +58,8 @@ class PresentationMaker {
                 researchTopics.getTopics(),
                 context,
                 10, // concurrencyLevel
-                kotlinx.coroutines.Dispatchers.getIO(), // dispatcher
-                (it, continuation) -> context.promptRunner(
+                getIO(), // dispatcher
+                (researchTopic, continuation) -> context.promptRunner(
                                 LlmOptions.fromModel(properties.getResearchLlm()),
                                 emptySet(), // 使用Kotlin的emptySet
                                 emptyList(), // 使用Kotlin的emptyList
@@ -73,30 +75,26 @@ class PresentationMaker {
                                         "Use web tools to research and the findPatternInProject tool to look\n" +
                                         "within the given software project.\n" +
                                         "Always look for code examples in the project before using the web.\n" +
-                                        "Topic: " + it.getTopic() + "\n" +
+                                        "Topic: " + researchTopic.getTopic() + "\n" +
                                         "Questions:\n" +
-                                        String.join("\n", it.getQuestions()),
+                                        join("\n", researchTopic.getQuestions()),
                                 ResearchReport.class
                         )
         );
 
-        return new ResearchResult(
-                researchTopics.getTopics().stream().map(topic ->
-                        new CompletedResearch(
-                                topic,
-                                researchReports.get(researchTopics.getTopics().indexOf(topic))
-                        )
-                ).collect(Collectors.toList())
-        );
+        return new ResearchResult(researchTopics.getTopics().stream()
+                .map(topic ->
+                        new CompletedResearch(topic, researchReports.get(researchTopics.getTopics().indexOf(topic)))).
+                toList());
     }
 
     @Action
-    public SlideDeck createDeck(PresentationRequest presentationRequest, ResearchResult researchComplete, OperationContext context) {
-        List<ResearchReport> reports = researchComplete.getTopicResearches().stream().map(CompletedResearch::getResearchReport).toList();
+    public SlideDeck createDeck(PresentationRequest presentationRequest, ResearchResult researchResult, OperationContext context) {
+        List<ResearchReport> reports = researchResult.getTopicResearches().stream().map(CompletedResearch::getResearchReport).toList();
         SlideDeck slideDeck = context.promptRunner(
                         LlmOptions.fromCriteria(ModelSelectionCriteria.byName(properties.getCreationLlm())),
-                        emptySet(), // 使用Kotlin的emptySet
-                        emptyList(), // 使用Kotlin的emptyList
+                        emptySet(),
+                        emptyList(),
                         emptyList(),
                         emptyList(),
                         false)
