@@ -12,15 +12,8 @@ class PresentationMakerProperties {
         return researchLlm;
     }
 
-    public void setResearchLlm(String researchLlm) {
-        this.researchLlm = researchLlm;
-    }
-
     public String getCreationLlm() {
         return creationLlm;
     }
 
-    public void setCreationLlm(String creationLlm) {
-        this.creationLlm = creationLlm;
-    }
 }

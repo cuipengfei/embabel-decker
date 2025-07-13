@@ -189,15 +189,15 @@ class PresentationMaker {
                                 "Do not ask any questions.\n" +
                                 "If you don't think an image is needed, return the slide unchanged.\n\n" +
                                 "<slide>\n" +
-                                slide.getContent() + "\n" +
+                                slide.content() + "\n" +
                                 "</slide>"
                 );
-                return new Slide(slide.getNumber(), newContent);
+                return new Slide(slide.number(), newContent);
             }).collect(Collectors.toList());
 
             SlideDeck dwi = withDiagrams;
             for (Slide slide : newSlides) {
-                dwi = dwi.replaceSlide(slide, slide.getContent());
+                dwi = dwi.replaceSlide(slide, slide.content());
             }
             deckWithIllustrations = dwi;
         }

@@ -1,7 +1,9 @@
 package com.embabel.template.decker_agent;
 
 import com.embabel.agent.api.common.autonomy.AgentProcessExecution;
+import com.embabel.agent.core.Agent;
 import com.embabel.agent.core.AgentPlatform;
+import com.embabel.agent.core.AgentProcess;
 import com.embabel.agent.core.ProcessOptions;
 import com.embabel.agent.event.logging.personality.severance.LumonColorPalette;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,12 +45,12 @@ public class PresentationMakerShell {
                 PresentationRequest.class
         );
 
-        var targetAgent = CollectionsKt.single(
+        Agent targetAgent = CollectionsKt.single(
                 agentPlatform.agents(),
                 agent -> agent.getName().equals("PresentationMaker")
         );
 
-        var agentProcess = agentPlatform.runAgentWithInput(
+        AgentProcess agentProcess = agentPlatform.runAgentWithInput(
                 targetAgent,
                 ProcessOptions.Companion.getDEFAULT(),
                 presentationRequest

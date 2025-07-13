@@ -3,6 +3,7 @@ package com.embabel.template.decker_agent;
 import com.embabel.agent.domain.library.ContentAsset;
 import kotlin.collections.CollectionsKt;
 import kotlin.text.StringsKt;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,11 +29,13 @@ public class SlideDeck implements ContentAsset {
         return deck;
     }
 
+    @NotNull
     @Override
     public String getContent() {
         return deck;
     }
 
+    @NotNull
     @Override
     public Instant getTimestamp() {
         return timestamp;
@@ -88,27 +91,27 @@ public class SlideDeck implements ContentAsset {
         if (slides.isEmpty()) {
             return new SlideDeck("---\n" + trimmedHeader + "\n");
         } else {
-            String slideContents = slides.stream().map(Slide::getContent).collect(Collectors.joining("\n---\n"));
+            String slideContents = slides.stream().map(Slide::content).collect(Collectors.joining("\n---\n"));
             return new SlideDeck("---\n" + trimmedHeader + "\n---\n" + slideContents + "\n");
         }
     }
 
     public SlideDeck replaceSlide(Slide slide, String newContent) {
         List<Slide> slides = slides();
-        if (slides.isEmpty() || slide.getNumber() < 1 || slide.getNumber() > slides.size()) {
+        if (slides.isEmpty() || slide.number() < 1 || slide.number() > slides.size()) {
             return this;
         }
 
         List<Slide> updatedSlides = slides.stream().map(s -> {
-            if (s.getNumber() == slide.getNumber()) {
-                return new Slide(s.getNumber(), newContent);
+            if (s.number() == slide.number()) {
+                return new Slide(s.number(), newContent);
             } else {
                 return s;
             }
         }).collect(Collectors.toList());
 
         String currentHeader = header();
-        String slideContents = updatedSlides.stream().map(Slide::getContent).collect(Collectors.joining("\n---\n"));
+        String slideContents = updatedSlides.stream().map(Slide::content).collect(Collectors.joining("\n---\n"));
 
         return new SlideDeck("---\n" + currentHeader + "\n---\n" + slideContents + "\n");
     }

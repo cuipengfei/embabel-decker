@@ -25,7 +25,11 @@ class PresentationRequest implements PromptContributor {
     @JsonIgnore
     private final Project project;
 
-    public PresentationRequest(int slideCount, String presenterBio, String brief, String softwareProject, String outputDirectory, String outputFile, String header, Map<String, ImageInfo> images, boolean autoIllustrate, CoStar coStar) {
+    public PresentationRequest(int slideCount, String presenterBio,
+                               String brief, String softwareProject,
+                               String outputDirectory, String outputFile,
+                               String header, Map<String, ImageInfo> images,
+                               boolean autoIllustrate, CoStar coStar) {
         this.slideCount = slideCount;
         this.presenterBio = presenterBio;
         this.brief = brief;
