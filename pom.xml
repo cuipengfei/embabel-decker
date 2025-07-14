@@ -10,11 +10,11 @@
         <relativePath/> <!-- Lookup parent from repository -->
     </parent>
     <groupId>com.embabel.template</groupId>
-    <artifactId>java-decker</artifactId>
+    <artifactId>agent-demo</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>java-decker</name>
-    <description>java-decker</description>
+    <name>agent-demo</name>
+    <description>agent-demo</description>
 
     <properties>
         <java.version>21</java.version>
