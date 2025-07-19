@@ -16,15 +16,15 @@
 package com.embabel.template.code_agent.domain;
 
 import com.embabel.agent.tools.file.*;
-import com.embabel.template.code_agent.tools.BuildOptions;
-import com.embabel.template.code_agent.tools.BuildResult;
-import com.embabel.template.code_agent.tools.Ci;
-import com.embabel.template.code_agent.tools.SymbolSearch;
 import com.embabel.common.ai.prompt.PromptContribution;
 import com.embabel.common.ai.prompt.PromptContributionLocation;
 import com.embabel.common.ai.prompt.PromptContributor;
 import com.embabel.common.util.GetLoggerKt;
 import com.embabel.common.util.StringTransformer;
+import com.embabel.template.code_agent.tools.BuildOptions;
+import com.embabel.template.code_agent.tools.BuildResult;
+import com.embabel.template.code_agent.tools.Ci;
+import com.embabel.template.code_agent.tools.SymbolSearch;
 import com.fasterxml.jackson.annotation.JsonClassDescription;
 import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import kotlin.text.Regex;
