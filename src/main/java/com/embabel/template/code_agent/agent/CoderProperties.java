@@ -15,7 +15,7 @@
  */
 package com.embabel.template.code_agent.agent;
 
-import com.embabel.agent.config.models.AnthropicModels;
+import com.embabel.agent.config.models.OpenAiModels;
 import com.embabel.common.ai.model.LlmOptions;
 import com.embabel.common.ai.model.ModelSelectionCriteria;
 import com.embabel.common.ai.prompt.PromptContributor;
@@ -37,8 +37,8 @@ public class CoderProperties {
     private final LlmOptions fixCodingLlm;
 
     public CoderProperties() {
-        this(AnthropicModels.CLAUDE_37_SONNET,
-                AnthropicModels.CLAUDE_40_OPUS,
+        this(OpenAiModels.GPT_41,
+                OpenAiModels.GPT_41,
                 null,
                 false,
                 null,

@@ -15,7 +15,6 @@
  */
 package com.embabel.template.code_agent.domain;
 
-import com.embabel.agent.domain.InMemoryCrudRepository;
 import com.embabel.agent.tools.file.FileReadTools;
 import com.embabel.agent.tools.file.FileTools;
 import com.embabel.template.code_agent.agent.CoderProperties;
@@ -33,7 +32,7 @@ import java.util.stream.StreamSupport;
  * Look for parallel directories
  */
 @Service
-public abstract class FromDiskSoftwareProjectRepository extends InMemoryCrudRepository<SoftwareProject> implements SoftwareProjectRepository {
+public class FromDiskSoftwareProjectRepository extends InMemoryCrudRepository<SoftwareProject> implements SoftwareProjectRepository {
 
     private final Logger logger = LoggerFactory.getLogger(FromDiskSoftwareProjectRepository.class);
     private final CoderProperties properties;
