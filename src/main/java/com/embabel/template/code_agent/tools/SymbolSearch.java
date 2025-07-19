@@ -26,7 +26,7 @@ import java.util.List;
 public interface SymbolSearch extends PatternSearch {
 
     default Regex classPattern(String className) {
-        return Regex.Companion.fromLiteral(
+        return new Regex(
                 "(^|\\s)(class|interface|object|enum\\s+class|data\\s+class|sealed\\s+class|abstract\\s+class)\\s+" +
                         className +      // The exact class name
                         "\\b" +          // Word boundary to ensure it doesn't match partial names

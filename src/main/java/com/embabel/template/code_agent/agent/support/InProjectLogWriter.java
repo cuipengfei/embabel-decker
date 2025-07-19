@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class InProjectLogWriter implements LogWriter {
 
-    private final String path;
-    private final ObjectMapper objectMapper;
+    private String path;
+    private ObjectMapper objectMapper;
+
+    public InProjectLogWriter() {
+    }
 
     public InProjectLogWriter(ObjectMapper objectMapper) {
         this(".embabel/log.jsonl", objectMapper);
