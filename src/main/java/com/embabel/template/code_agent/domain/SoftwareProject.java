@@ -143,7 +143,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
         List<PatternMatch> matches = findClassInProject(name, "**/*.{java,kt}");
         if (!matches.isEmpty()) {
             return matches.stream()
-                    .map(match -> match.getRelativePath())
+                    .map(PatternMatch::getRelativePath)
                     .collect(Collectors.joining("\n"));
         } else {
             return "No class found with name " + name;
@@ -179,6 +179,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
         return "SoftwareProject(" + root + ")";
     }
 
+    @NotNull
     @Override
     public String contribution() {
         StringBuilder sb = new StringBuilder();
@@ -213,6 +214,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
+    @Tool(description = "Find files using glob patterns. Return absolute paths")
     public List<String> findFiles(@NotNull String glob) {
         return FileTools.DefaultImpls.findFiles(this, glob);
     }
@@ -231,12 +233,14 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
+    @Tool(description = "Read a file at the relative path")
     public String readFile(@NotNull String path) {
         return FileTools.DefaultImpls.readFile(this, path);
     }
 
     @NotNull
     @Override
+    @Tool(description = "List files and directories at a given path. Prefix is f: for file or d: for directory")
     public List<String> listFiles(@NotNull String path) {
         return FileTools.DefaultImpls.listFiles(this, path);
     }
@@ -255,6 +259,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
+    @Tool(description = "Create a file with the given content")
     public String createFile(@NotNull String path, @NotNull String content) {
         return FileTools.DefaultImpls.createFile(this, path, content);
     }
@@ -266,18 +271,23 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
-    public String editFile(@NotNull String path, @NotNull String oldContent, @NotNull String newContent) {
+    @Tool(description = "Edit the file at the given location. Replace oldContent with newContent. oldContent is typically just a part of the file. e.g. use it to replace a particular method to add another method")
+    public String editFile(@NotNull String path,
+                           @NotNull @ToolParam(description = "content to replace") String oldContent,
+                           @NotNull @ToolParam(description = "replacement content") String newContent) {
         return FileTools.DefaultImpls.editFile(this, path, oldContent, newContent);
     }
 
     @NotNull
     @Override
+    @Tool(description = "Create a directory at the given path")
     public String createDirectory(@NotNull String path) {
         return FileTools.DefaultImpls.createDirectory(this, path);
     }
 
     @NotNull
     @Override
+    @Tool(description = "Append content to an existing file. The file must already exist.")
     public String appendFile(@NotNull String path, @NotNull String content) {
         return FileTools.DefaultImpls.appendFile(this, path, content);
     }
@@ -289,6 +299,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
+    @Tool(description = "Delete a file at the given path")
     public String delete(@NotNull String path) {
         return FileTools.DefaultImpls.delete(this, path);
     }
@@ -301,6 +312,7 @@ public class SoftwareProject implements PromptContributor, FileTools, SymbolSear
 
     @NotNull
     @Override
+    @Tool(description = "search for a regex in the project")
     public String findPatternInProject(@NotNull String pattern, @NotNull String globPattern) {
         return PatternSearch.DefaultImpls.findPatternInProject(this, pattern, globPattern);
     }

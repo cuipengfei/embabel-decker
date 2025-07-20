@@ -34,10 +34,6 @@ public interface SymbolSearch extends PatternSearch {
         );
     }
 
-    default List<PatternMatch> findClassInProject(String className) {
-        return findClassInProject(className, "**/*.{kt,java}", true);
-    }
-
     default List<PatternMatch> findClassInProject(String className, String globPattern) {
         return findClassInProject(className, globPattern, true);
     }
